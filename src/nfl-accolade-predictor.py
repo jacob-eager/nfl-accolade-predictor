@@ -3,6 +3,43 @@ def main():
     prompt_user()
 
 def prompt_user():
+
+    """
+    OFFENSE: 28 attributes
+
+    In order:
+    pass_attempts
+    complete_pass
+    incomplete_pass: Can either prompt the user or do (pass_attempts - complete_pass(
+    passing_yards
+    receiving_yards
+    rush_attempts
+    rushing_yards
+    rush_touchdown
+    pass_touchdown
+    interception
+    fumble
+    fumble_lost
+    receptions
+    targets
+    receiving_touchdown
+    total_tds: (rush_touchdown + pass_touchdown + receiving_touchdown)
+    total_yards: (passing_yards + receiving_yards + rushing_yards)
+    games_played_season
+    passer_rating:
+
+
+
+
+    :return:
+    """
+
+
+
+
+
+
+
     # This could probably be replaced with asking for a position, if we decide to use position as an attribute
     category = input("Is your player on offense or defense? \n")
 
