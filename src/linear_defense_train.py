@@ -5,7 +5,7 @@ from sklearn.metrics import mean_absolute_error
 import joblib
 # Load our data set
 #df = pd.read_csv("../../Downloads/house_data.csv")
-df = pd.read_csv("defense_complete_standardized.csv")
+df = pd.read_csv("../data/defense_complete_standardized.csv")
 # Create the X and y arrays
 X = df [[
     "position", "solo_tackle", "assist_tackle", "sack", "safety", "interception",
@@ -19,7 +19,7 @@ model = LinearRegression()
 # Train the model
 model.fit(X_train, y_train)
 # Save the trained model to a file so we can use it to make predictions later
-joblib.dump(model, 'defense_linear_award_model.pkl')
+joblib.dump(model, '../data/defense_linear_award_model.pkl')
 # Report how well the model is performing
 print("Model training results:")
 # Report an error rate on the training set
