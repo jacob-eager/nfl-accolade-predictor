@@ -1,10 +1,10 @@
 import pandas as pd
 
-player_file_path = ['offense.csv', 'defense.csv']
-award_file_path =  ['mvp2012-2024.csv', 'offensive_player_of_the_year.csv',
-                    'defensive_player_of_the_year.csv', 'combined_all_pro.csv']
+player_file_path = ['../data/offense.csv', '../data/defense.csv']
+award_file_path =  ['../data/mvp2012-2024.csv', '../data/offensive_player_of_the_year.csv',
+                    '../data/defensive_player_of_the_year.csv', '../data/combined_all_pro.csv']
 award_type = ['mvp', 'opoy', 'dpoy', 'allpro']
-output_file_path = ['offense_complete.csv', 'defense_complete.csv']
+output_file_path = ['../data/offense_complete.csv', '../data/defense_complete.csv']
 
 team_name_map = {
     'ARI': 'Arizona Cardinals', 'ATL': 'Atlanta Falcons', 'BAL': 'Baltimore Ravens',
