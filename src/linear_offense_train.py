@@ -23,7 +23,7 @@ model = LinearRegression()
 # Train the model
 model.fit(X_train, y_train)
 # Save the trained model to a file so we can use it to make predictions later
-joblib.dump(model, 'offense_linear_award_model.pkl')
+joblib.dump(model, '../data/offense_linear_award_model.pkl')
 # Report how well the model is performing
 print("Model training results:")
 # Report an error rate on the training set
