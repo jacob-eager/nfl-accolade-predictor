@@ -8,13 +8,13 @@ from sklearn.multioutput import MultiOutputClassifier
 import joblib
 import matplotlib.pyplot as plt
 
-with open("../data/offense_raw_stats.csv", mode='r') as file:
+with open("../data/offense_complete.csv", mode='r') as file:
     data = csv.DictReader(file)
     df = pd.DataFrame(data)
     df = df.drop(columns=["position"])
     print(df.head())
 
-    X = df[["pass_attempts", "complete_pass", "incomplete_pass", "passing_yards",
+    X = df[["position", "pass_attempts", "complete_pass", "incomplete_pass", "passing_yards",
             "receiving_yards", "rush_attempts", "rushing_yards", "rush_touchdown",
             "pass_touchdown", "safety", "interception", "fumble", "fumble_lost",
             "receptions", "targets", "receiving_touchdown", "total_tds", "total_yards",
