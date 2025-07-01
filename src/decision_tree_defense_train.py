@@ -1,10 +1,10 @@
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import mean_absolute_error
+from sklearn.multioutput import MultiOutputClassifier
 from sklearn import tree
 import pandas as pd
 import csv
-from sklearn.metrics import mean_absolute_error
-from sklearn.multioutput import MultiOutputClassifier
 import joblib
 import matplotlib.pyplot as plt
 
@@ -30,7 +30,7 @@ with open("../data/defense_raw_stats.csv", mode='r') as file:
     moc.fit(X_train, y_train)
 
     # Save the trained model to a file so we can use it to make predictions later
-    joblib.dump(moc, '../data/defense_tree_defense_model.pkl')
+    joblib.dump(moc, '../models/decision_tree_defense_model.pkl')
 
     # Report how well the model is performing
     print("Model training results:")

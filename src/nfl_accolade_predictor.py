@@ -7,8 +7,8 @@ def main():
 
 def prompt_user():
 
-    csv_file_offense = '../data/' + 'offense_linear_award_model.pkl'
-    csv_file_defense = '../data/' + 'defense_linear_award_model.pkl'
+    csv_file_offense = '../models/' + 'offense_linear_award_model.pkl'
+    csv_file_defense = '../models/' + 'defense_linear_award_model.pkl'
     
     """
     OFFENSE: 28 attributes
@@ -182,7 +182,7 @@ def prompt_user():
         defensive_ints = int(input("Defensive INTs: "))
         pick_sixes = int(input("INT return TDs: "))
 
-        model, scaler = joblib.load(csv_file_offense)
+        model, scaler = joblib.load(csv_file_defense)
 
         input_features = ["fumbles_forced", "fumbles_recovered", "fumble_return_tds", "assisted_tackles", "solo_tackles", "sacks", "defensive_ints", "pick_sixes"]
         input_values = [fumbles_forced, fumbles_recovered, fumble_return_tds, assisted_tackles, solo_tackles, sacks, defensive_ints, pick_sixes]
@@ -197,10 +197,6 @@ def prompt_user():
         print('MVP: ' + str(predicted[0]))
         print('DPOY: ' + str(predicted[1]))
         print('All-Pro: ' + str(predicted[2]))
-
-
-
-
 
 if __name__ == "__main__":
     main()

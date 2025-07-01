@@ -30,7 +30,7 @@ moc = MultiOutputClassifier(model)
 # Train the model
 moc.fit(X_train_scaled, y_train)
 # Save the trained model to a file so we can use it to make predictions later
-joblib.dump((moc, scaler), '../data/offense_linear_award_model.pkl')
+joblib.dump((moc, scaler), '../models/offense_linear_award_model.pkl')
 # Report how well the model is performing
 print("Model training results:")
 # Report an error rate on the training set
