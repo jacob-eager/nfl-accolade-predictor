@@ -1,14 +1,15 @@
 import joblib
 import pandas as pd
 
-from src import decision_tree_offense_train
-
 
 def main():
     prompt_user()
 
 def prompt_user():
 
+    csv_file_offense = '../data/' + 'offense_linear_award_model.pkl'
+    csv_file_defense = '../data/' + 'defense_linear_award_model.pkl'
+    
     """
     OFFENSE: 28 attributes
 
@@ -51,11 +52,27 @@ def prompt_user():
     td_pct = ((pass_attempts + rush_attempts + receptions) / total_tds)
 
     """
-
+    #If these aren't initialized, it can bug
+    total_yards = 0
+    pass_td_pct = 0
+    passer_rating = 0
+    comp_pct = 0
+    int_pct = 0
+    ypa = 0
+    yptarget = 0
+    ayptarget = 0
+    ypr = 0
+    rush_td_pct = 0
+    ypc = 0
+    td_pct = 0
+    total_tds = 0
+    rec_td_pct = 0
     # This could probably be replaced with asking for a position, if we decide to use position as an attribute
     category = input("Is your player on offense or defense? \n")
 
     if category.lower() == "offense":
+        positions = ["QB", "WR", "TE", "G", "FB", "C", "RB", "T"]
+        position = positions.index(input("What position does your player play? QB, RB, WR, etc."))
         has_passing_stats = input("Does your player have passing stats? \n")
         if has_passing_stats.lower() == "yes":
             passing_yards = int(input("Passing yards: "))
@@ -122,19 +139,18 @@ def prompt_user():
         except:
             print()
 
-        model = joblib.load('offense_model.pkl')
+        model, scaler = joblib.load(csv_file_offense)
 
         input_features = [
-            "pass_attempts", "complete_pass", "incomplete_pass", "passing_yards",
+            "position", "pass_attempts", "complete_pass", "incomplete_pass", "passing_yards",
             "receiving_yards", "rush_attempts", "rushing_yards", "rush_touchdown",
             "pass_touchdown", "safety", "interception", "fumble", "fumble_lost",
             "receptions", "targets", "receiving_touchdown", "total_tds", "total_yards",
             "games_played_season", "passer_rating", "comp_pct", "int_pct", "pass_td_pct",
             "ypa", "rec_td_pct", "yptarget", "ayptarget", "ypr", "rush_td_pct", "ypc", "td_pct"
         ]
-
         input_values = [
-            pass_attempts, complete_pass, incomplete_pass, passing_yards,
+            position, pass_attempts, complete_pass, incomplete_pass, passing_yards,
             receiving_yards, rush_attempts, rushing_yards, rush_touchdown,
             pass_touchdown, safety, interception, fumble, fumble_lost,
             receptions, targets, receiving_touchdown, total_tds, total_yards,
@@ -144,9 +160,9 @@ def prompt_user():
 
         # Wrap input_values in another list to form 1 row of 31 columns
         attributes = pd.DataFrame([input_values], columns=input_features)
+        attributes_scaled = scaler.transform(attributes)
 
-
-        predicted_values = model.predict(attributes)
+        predicted_values = model.predict(attributes_scaled)
 
         predicted = predicted_values[0]
 
@@ -165,6 +181,24 @@ def prompt_user():
         sacks = float(input("Sacks: "))
         defensive_ints = int(input("Defensive INTs: "))
         pick_sixes = int(input("INT return TDs: "))
+
+        model, scaler = joblib.load(csv_file_offense)
+
+        input_features = ["fumbles_forced", "fumbles_recovered", "fumble_return_tds", "assisted_tackles", "solo_tackles", "sacks", "defensive_ints", "pick_sixes"]
+        input_values = [fumbles_forced, fumbles_recovered, fumble_return_tds, assisted_tackles, solo_tackles, sacks, defensive_ints, pick_sixes]
+
+        attributes = pd.DataFrame([input_values], columns=input_features)
+        attributes_scaled = scaler.transform(attributes)
+
+        predicted_values = model.predict(attributes_scaled)
+
+        predicted = predicted_values[0]
+
+        print('MVP: ' + str(predicted[0]))
+        print('DPOY: ' + str(predicted[1]))
+        print('All-Pro: ' + str(predicted[2]))
+
+
 
 
 
