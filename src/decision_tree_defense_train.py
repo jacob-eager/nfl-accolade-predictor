@@ -8,14 +8,14 @@ from sklearn.multioutput import MultiOutputClassifier
 import joblib
 import matplotlib.pyplot as plt
 
-with open("../data/defense_complete.csv", mode='r') as file:
+with open("../data/defense_raw_stats.csv", mode='r') as file:
     data = csv.DictReader(file)
     df = pd.DataFrame(data)
     df = df.drop(columns=["position"])
     print(df.head())
 
     X = df [[
-    "position", "solo_tackle", "assist_tackle", "sack", "safety", "interception",
+    "solo_tackle", "assist_tackle", "sack", "safety", "interception",
     "def_touchdown", "fumble_forced", "games_played_season"
     ]]
   
@@ -30,7 +30,7 @@ with open("../data/defense_complete.csv", mode='r') as file:
     moc.fit(X_train, y_train)
 
     # Save the trained model to a file so we can use it to make predictions later
-    joblib.dump(moc, 'defense_model.pkl')
+    joblib.dump(moc, '../data/defense_tree_defense_model.pkl')
 
     # Report how well the model is performing
     print("Model training results:")
@@ -43,9 +43,11 @@ with open("../data/defense_complete.csv", mode='r') as file:
     mse_test = mean_absolute_error(y_test, moc.predict(X_test))
     print(f" - Test Set Error: {mse_test}")
 
-    tree.plot_tree(moc.estimators_[2],
-                   feature_names= ["position", "solo_tackle", "assist_tackle", "sack", "safety", "interception",
-                                  "def_touchdown", "fumble_forced", "games_played_season"]
-                   class_names=["mvp", "dpoy", "allpro"])
+    # Iterates through the decision trees for all 3 predicted accolades
+    for i in range(3):
+        tree.plot_tree(moc.estimators_[i],
+                       feature_names= ["solo_tackle", "assist_tackle", "sack", "safety", "interception",
+                                      "def_touchdown", "fumble_forced", "games_played_season"],
+                       class_names=["mvp", "dpoy", "allpro"])
 
-    plt.show()
+        plt.show()

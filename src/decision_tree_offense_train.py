@@ -14,7 +14,7 @@ with open("../data/offense_complete.csv", mode='r') as file:
     df = df.drop(columns=["position"])
     print(df.head())
 
-    X = df[["position", "pass_attempts", "complete_pass", "incomplete_pass", "passing_yards",
+    X = df[["pass_attempts", "complete_pass", "incomplete_pass", "passing_yards",
             "receiving_yards", "rush_attempts", "rushing_yards", "rush_touchdown",
             "pass_touchdown", "safety", "interception", "fumble", "fumble_lost",
             "receptions", "targets", "receiving_touchdown", "total_tds", "total_yards",
@@ -25,14 +25,14 @@ with open("../data/offense_complete.csv", mode='r') as file:
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
-    dtc = DecisionTreeClassifier(max_depth=None, class_weight='balanced', min_samples_leaf=2)
+    dtc = DecisionTreeClassifier(max_depth=None)
 
     moc = MultiOutputClassifier(dtc)
 
     moc.fit(X_train, y_train)
 
     # Save the trained model to a file so we can use it to make predictions later
-    joblib.dump(moc, 'offense_model.pkl')
+    joblib.dump(moc, '../data/decision_tree_offense_model.pkl')
 
     # Report how well the model is performing
     print("Model training results:")
@@ -45,15 +45,16 @@ with open("../data/offense_complete.csv", mode='r') as file:
     mse_test = mean_absolute_error(y_test, moc.predict(X_test))
     print(f" - Test Set Error: {mse_test}")
 
-    tree.plot_tree(moc.estimators_[2],
-                   feature_names=["pass_attempts", "complete_pass", "incomplete_pass", "passing_yards",
-                                  "receiving_yards", "rush_attempts", "rushing_yards", "rush_touchdown",
-                                  "pass_touchdown", "safety", "interception", "fumble", "fumble_lost",
-                                  "receptions", "targets", "receiving_touchdown", "total_tds", "total_yards",
-                                  "games_played_season", "passer_rating", "comp_pct", "int_pct", "pass_td_pct",
-                                  "ypa", "rec_td_pct", "yptarget", "ayptarget", "ypr", "rush_td_pct", "ypc",
-                                  "td_pct"],
-                   class_names=["mvp", "opoy", "allpro"])
+    # Iterates through the decision trees for all 3 predicted accolades
+    for i in range(3):
+        tree.plot_tree(moc.estimators_[i],
+                       feature_names=["pass_attempts", "complete_pass", "incomplete_pass", "passing_yards",
+                                      "receiving_yards", "rush_attempts", "rushing_yards", "rush_touchdown",
+                                      "pass_touchdown", "safety", "interception", "fumble", "fumble_lost",
+                                      "receptions", "targets", "receiving_touchdown", "total_tds", "total_yards",
+                                      "games_played_season", "passer_rating", "comp_pct", "int_pct", "pass_td_pct",
+                                      "ypa", "rec_td_pct", "yptarget", "ayptarget", "ypr", "rush_td_pct", "ypc",
+                                      "td_pct"],
+                       class_names=["mvp", "opoy", "allpro"])
 
-    plt.show()
-
+        plt.show()
