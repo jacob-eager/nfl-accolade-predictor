@@ -8,7 +8,7 @@ import csv
 import joblib
 import matplotlib.pyplot as plt
 
-with open("../data/defense_raw_stats.csv", mode='r') as file:
+with open("../data/defense_complete.csv", mode='r') as file:
     data = csv.DictReader(file)
     df = pd.DataFrame(data)
     df = df.drop(columns=["position"])
@@ -19,7 +19,7 @@ with open("../data/defense_raw_stats.csv", mode='r') as file:
     "def_touchdown", "fumble_forced", "games_played_season"
     ]]
   
-    y = df[["mvp", "dpoy", "allpro"]]
+    y = df[["dpoy", "allpro"]]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
@@ -48,6 +48,6 @@ with open("../data/defense_raw_stats.csv", mode='r') as file:
         tree.plot_tree(moc.estimators_[i],
                        feature_names= ["solo_tackle", "assist_tackle", "sack", "safety", "interception",
                                       "def_touchdown", "fumble_forced", "games_played_season"],
-                       class_names=["mvp", "dpoy", "allpro"])
+                       class_names=["dpoy", "allpro"])
 
         plt.show()
